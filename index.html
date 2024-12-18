@@ -7,13 +7,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Silent Letters Recognition</h1>
-    <p>Perform gestures for letters and the model will recognize it.</p>
-    <video id="video" width="640" height="480" autoplay></video>
+    <div class="container">
+        <!-- Left side: Video Stream -->
+        <div class="video-container">
+            <h1>Silent Letters Recognition</h1>
+            <p>Perform gestures for letters and the model will recognize them.</p>
+            <video id="video" width="640" height="480" autoplay></video>
+        </div>
 
-    <!-- Add a section to display the predicted letter -->
-    <div id="prediction">
-        <h2>Prediction: <span id="predicted-letter">None</span></h2>
+        <!-- Right side: Predictions -->
+        <div class="predictions-container">
+            <h2>Predictions</h2>
+            <div id="predictions-list">
+                <!-- Dynamic prediction list will be inserted here -->
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>

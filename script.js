@@ -1,6 +1,9 @@
 let model;
 let videoElement = document.getElementById('video');
-let predictedLetterElement = document.getElementById('predicted-letter');
+let predictionsList = document.getElementById('predictions-list');
+
+// Classes of the model (A-Z)
+const classes = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
 
 async function loadModel() {
     // Load the model
@@ -21,19 +24,37 @@ function setupCamera() {
     });
 }
 
+// Function to classify gesture and update UI
 async function classifyGesture() {
-    // Get the current frame and classify the gesture
+    // Get predictions
     const predictions = await model.predict(tf.browser.fromPixels(videoElement));
-    if (predictions && predictions.length > 0) {
-        const predictedLetter = predictions[0].className; // Assuming className is the predicted letter
-        console.log(predictedLetter);
 
-        // Display the predicted letter in the HTML
-        predictedLetterElement.textContent = predictedLetter;
-    }
-    // Continue classifying
+    // Clear existing predictions
+    predictionsList.innerHTML = '';
+
+    // Iterate through all classes and update predictions list
+    classes.forEach((label, index) => {
+        // Find the confidence score for the current class
+        const confidence = predictions[index]?.probability || 0;
+
+        // Create a list item for the class
+        const listItem = document.createElement('div');
+        listItem.className = 'prediction-item';
+
+        // Add the label and confidence percentage
+        listItem.innerHTML = `
+            <span class="label">${label}</span>
+            <span class="percentage">${(confidence * 100).toFixed(2)}%</span>
+        `;
+
+        // Append to the predictions list
+        predictionsList.appendChild(listItem);
+    });
+
+    // Continue classifying in a loop
     requestAnimationFrame(classifyGesture);
 }
 
+// Load the model and set up the camera
 loadModel();
 setupCamera();

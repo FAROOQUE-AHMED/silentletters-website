@@ -1,19 +1,56 @@
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-video {
-    border: 2px solid #ccc;
-    margin-top: 20px;
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
 }
 
-#prediction {
-    margin-top: 20px;
-    font-size: 2em;
+.video-container {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.predictions-container {
+    flex: 0.4;
+    max-width: 300px;
+    text-align: left;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.predictions-container h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#predictions-list {
+    list-style: none;
+    padding: 0;
+}
+
+.prediction-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1em;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.prediction-item .label {
     font-weight: bold;
 }
 
-#predicted-letter {
+.prediction-item .percentage {
     color: #4CAF50;
+    font-weight: bold;
 }
