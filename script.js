@@ -6,13 +6,17 @@ let predictionsList = document.getElementById('predictions-list');
 const classes = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
 
 async function loadModel() {
-    // Load the model
-    model = await tf.automl.loadGraphModel('model/model.json');
-    console.log('Model Loaded');
+    try {
+        // Load the model
+        model = await tf.automl.loadGraphModel('model/model.json');
+        console.log('Model Loaded Successfully');
+    } catch (error) {
+        console.error('Error loading model:', error);
+        alert('Failed to load the model. Please check the console for more details.');
+    }
 }
 
 function setupCamera() {
-    // Set up camera stream
     navigator.mediaDevices.getUserMedia({
         video: true,
     }).then((stream) => {
@@ -21,35 +25,40 @@ function setupCamera() {
             console.log('Camera ready');
             classifyGesture();
         };
+    }).catch((error) => {
+        console.error('Error setting up camera:', error);
+        alert('Failed to access the camera. Please check permissions.');
     });
 }
 
-// Function to classify gesture and update UI
 async function classifyGesture() {
-    // Get predictions
-    const predictions = await model.predict(tf.browser.fromPixels(videoElement));
+    if (!model) {
+        console.error('Model is not loaded yet.');
+        return;
+    }
 
-    // Clear existing predictions
-    predictionsList.innerHTML = '';
+    try {
+        // Get predictions
+        const predictions = await model.predict(tf.browser.fromPixels(videoElement));
+        console.log('Predictions:', predictions);
 
-    // Iterate through all classes and update predictions list
-    classes.forEach((label, index) => {
-        // Find the confidence score for the current class
-        const confidence = predictions[index]?.probability || 0;
+        // Clear existing predictions
+        predictionsList.innerHTML = '';
 
-        // Create a list item for the class
-        const listItem = document.createElement('div');
-        listItem.className = 'prediction-item';
-
-        // Add the label and confidence percentage
-        listItem.innerHTML = `
-            <span class="label">${label}</span>
-            <span class="percentage">${(confidence * 100).toFixed(2)}%</span>
-        `;
-
-        // Append to the predictions list
-        predictionsList.appendChild(listItem);
-    });
+        // Update predictions list
+        classes.forEach((label, index) => {
+            const confidence = predictions[index]?.probability || 0;
+            const listItem = document.createElement('div');
+            listItem.className = 'prediction-item';
+            listItem.innerHTML = `
+                <span class="label">${label}</span>
+                <span class="percentage">${(confidence * 100).toFixed(2)}%</span>
+            `;
+            predictionsList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Error during classification:', error);
+    }
 
     // Continue classifying in a loop
     requestAnimationFrame(classifyGesture);
