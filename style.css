@@ -2,7 +2,18 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
 }
+
 video {
     border: 2px solid #ccc;
     margin-top: 20px;
+}
+
+#prediction {
+    margin-top: 20px;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+#predicted-letter {
+    color: #4CAF50;
 }
