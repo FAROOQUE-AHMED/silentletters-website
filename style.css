@@ -21,7 +21,7 @@ body {
     flex: 0.4;
     max-width: 300px;
     text-align: left;
-    background-color: #f9f9f9;
+    background-color: #1100ff;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -43,7 +43,7 @@ body {
     margin-bottom: 10px;
     font-size: 1em;
     padding: 5px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ff0000;
 }
 
 .prediction-item .label {
